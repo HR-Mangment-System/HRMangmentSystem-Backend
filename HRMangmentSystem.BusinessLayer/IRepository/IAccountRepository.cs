@@ -9,6 +9,9 @@ namespace HRMangmentSystem.BusinessLayer.IRepository
 {
     public interface IAccountRepository
     {
-        public Task CreateAdminAsync(ApplicationUser user, bool isSuperAdmin);
+        public Task CreateAdminAsync(ApplicationUser user, string password, bool isSuperAdmin);
+        public Task<string> CreateLoginTokenAsync(ApplicationUser user);
+
     }
+
 }

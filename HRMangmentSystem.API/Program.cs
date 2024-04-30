@@ -1,10 +1,13 @@
 using HRMangmentSystem.API.Mapping;
-using HRMangmentSystem.BusinessLayer.IRepository;
-using HRMangmentSystem.BusinessLayer.Repository;
+using HRMangmentSystem.API.ResponseBase;
+using HRMangmentSystem.BusinessLayer;
 using HRMangmentSystem.DataAccessLayer.Context;
 using HRMangmentSystem.DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,18 +23,45 @@ builder.Services.AddDbContext<HRMangmentCotext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("abdelwahabConn")));
 
 //auto mapper dependency injection
-builder.Services.AddAutoMapper(typeof(AccountPostMapping)); // Add AutoMapper services
+builder.Services.AddAutoMapper(typeof(AccountPostMapping));
 
 // Identity Configuration
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<HRMangmentCotext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders().AddRoles<IdentityRole>();
+
 //Injecting Business Layer Dependencies
-//builder.Services.BusinessLayerModuleDependendcies();
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.BusinessLayerModuleDependendcies();
+
+//Inject Response Handler 
+builder.Services.AddScoped<ResponseHandler>();
+
+// Add JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        ValidAudience = builder.Configuration["JWT:ValidAudiance"],
+        RequireExpirationTime = true, // Ensure tokens have an expiration time
+        IssuerSigningKey =
+        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+    };
+});
+
 
 
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -40,7 +70,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

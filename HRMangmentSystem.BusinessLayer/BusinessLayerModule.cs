@@ -6,14 +6,10 @@ namespace HRMangmentSystem.BusinessLayer
 {
     public static class BusinessLayerModule
     {
-        //public static IServiceCollection BusinessLayerModuleDependendcies(this IServiceCollection services)
-        //{
-        //    services.AddTransient<IAccountRepository, AccountRepository>();
-        //    return services;
-        //}
-        public static void BusinessLayerModuleDependendcies(this IServiceCollection services)
+        public static IServiceCollection BusinessLayerModuleDependendcies(this IServiceCollection services)
         {
             services.AddTransient<IAccountRepository, AccountRepository>();
+            return services;
         }
 
     }
