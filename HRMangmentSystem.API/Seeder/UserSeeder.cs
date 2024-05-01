@@ -6,7 +6,7 @@ namespace HRMangmentSystem.API.Seeder
 {
     public static class UserSeeder
     {
-        public static async Task SeedAsync(UserManager<ApplicationUser> _userManager)
+        public static async Task SeedAsync(UserManager<ApplicationUser> _userManager, RoleManager<IdentityRole> _roleManager)
         {
             var usersCount = _userManager.Users.Count();
             if (usersCount <= 0)
@@ -21,6 +21,8 @@ namespace HRMangmentSystem.API.Seeder
                     PhoneNumberConfirmed = true
                 };
                 await _userManager.CreateAsync(defaultuser, "123456Aa*");
+                if (!await _roleManager.RoleExistsAsync(UserRoles.SuperAdmin))
+                    await _roleManager.CreateAsync(new IdentityRole(UserRoles.SuperAdmin));
                 await _userManager.AddToRoleAsync(defaultuser, UserRoles.SuperAdmin);
             }
         }
