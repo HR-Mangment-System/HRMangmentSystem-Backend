@@ -108,7 +108,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())// to deal with it as scoped not singleton
 {
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-    await UserSeeder.SeedAsync(userManager);
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await UserSeeder.SeedAsync(userManager, roleManager);
+
 }
 
 // Configure the HTTP request pipeline.
