@@ -53,7 +53,7 @@ namespace HRMangmentSystem.API.Controllers
                 return BadRequest(response);
             }
             var mappedUser = _mapper.Map<AccountPostDTO, ApplicationUser>(user);
-            await _accountRepository.CreateAdminAsync(mappedUser, user.Password, false);
+            await _accountRepository.CreateAdminAsync(mappedUser, user.Password, true);
             return Ok();
         }
         [HttpPost("Login")]

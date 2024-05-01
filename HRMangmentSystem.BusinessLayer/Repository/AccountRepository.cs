@@ -15,12 +15,20 @@ namespace HRMangmentSystem.BusinessLayer.Repository
         private readonly UserManager<ApplicationUser> _userManger;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _config;
-        public AccountRepository(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration config)
+        private readonly IGroupRepository _groupRepository;
+        public AccountRepository(UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IConfiguration config,
+            IGroupRepository groupRepository
+            )
         {
             _userManger = userManager;
             _roleManager = roleManager;
             _config = config;
+            _groupRepository = groupRepository;
         }
+
+
         public async Task CreateAdminAsync(ApplicationUser user, string password, bool isSuperAdmin)
         {
             IdentityResult result = await _userManger.CreateAsync(user, password);
@@ -38,6 +46,14 @@ namespace HRMangmentSystem.BusinessLayer.Repository
                     if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
                         await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
                     await _userManger.AddToRoleAsync(user, UserRoles.Admin);
+                }
+                if (user.GroupId != null)
+                {
+                    List<string> roles = await AddUserRoles(user.GroupId.Value);
+                    foreach (var role in roles)
+                    {
+                        await _userManger.AddToRoleAsync(user, role);
+                    }
                 }
             }
         }
@@ -80,6 +96,27 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             // Save the token to the AspNetUserTokens table
             await _userManger.SetAuthenticationTokenAsync(await _userManger.FindByEmailAsync(user.Email), "JWT", "AccessToken", new JwtSecurityTokenHandler().WriteToken(HRMangmentToken));
             return new JwtSecurityTokenHandler().WriteToken(HRMangmentToken);
+        }
+
+        public async Task<List<string>> AddUserRoles(int groupId)
+        {
+            List<string> roles = new List<string>();
+            Group group = await _groupRepository.GetGroupById(groupId);
+            if (group is not null)
+            {
+                var groupPermissions = group.Permissions;
+                foreach (var permission in groupPermissions)
+                {
+                    var p = PermissionGenerator.GeneratePermissions(permission.Name, false, true, false, true);
+                    foreach (var perm in p)
+                    {
+                        if (!await _roleManager.RoleExistsAsync(perm))
+                            await _roleManager.CreateAsync(new IdentityRole(perm));
+                        roles.Add(perm);
+                    }
+                }
+            }
+            return roles;
         }
     }
 }

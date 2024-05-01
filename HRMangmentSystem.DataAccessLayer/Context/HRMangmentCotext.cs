@@ -1,4 +1,6 @@
-﻿using HRMangmentSystem.DataAccessLayer.Models;
+﻿using HRManagementSystem.DataAccessLayer.Models;
+using HRMangmentSystem.DataAccessLayer.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,11 +15,15 @@ namespace HRMangmentSystem.DataAccessLayer.Context
     {
         public HRMangmentCotext()
         {
-
         }
         public HRMangmentCotext(DbContextOptions<HRMangmentCotext> options) : base(options)
         {
         }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Department> Departments { get; set; }
+
     }
 
 }
