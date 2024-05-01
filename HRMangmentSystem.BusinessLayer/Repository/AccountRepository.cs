@@ -71,17 +71,9 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             {
                 userClaims.Add(new Claim(ClaimTypes.Role, r));
             }
-            if (role.Contains(UserRoles.SuperAdmin))
-            {
-                userClaims.Add(new Claim("userRole", UserRoles.SuperAdmin));
-            }
-            else
-            {
-                userClaims.Add(new Claim("userRole", UserRoles.Admin));
-            }
 
             SecurityKey securityKey =
-    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Secret"]));
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Secret"]));
 
 
             SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

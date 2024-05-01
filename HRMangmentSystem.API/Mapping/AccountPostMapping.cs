@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HRMangmentSystem.API.DTOS;
+using HRMangmentSystem.API.DTOS.AccountDTO;
 using HRMangmentSystem.DataAccessLayer.Models;
 
 namespace HRMangmentSystem.API.Mapping
@@ -9,6 +9,7 @@ namespace HRMangmentSystem.API.Mapping
         public AccountPostMapping()
         {
             CreateMap<AccountPostDTO, ApplicationUser>();
+            CreateMap<SuperAdminCommand, ApplicationUser>();
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using HRMangmentSystem.BusinessLayer.IRepository;
+﻿using AutoMapper;
+using HRMangmentSystem.API.DTOS.AccountDTO;
+using HRMangmentSystem.API.DTOS.GroupDTO;
+using HRMangmentSystem.API.ResponseBase;
+using HRMangmentSystem.BusinessLayer.IRepository;
 using HRMangmentSystem.DataAccessLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +14,19 @@ namespace HRMangmentSystem.API.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IGroupRepository _groupRepository;
-        public GroupController(IGroupRepository groupRepo)
+        private readonly IMapper _mapper;
+        private readonly ResponseHandler _responseHandler;
+        public GroupController(IGroupRepository groupRepository, IMapper mapper, ResponseHandler responseHandler)
         {
-            _groupRepository = groupRepo;
+            _groupRepository = groupRepository;
+            _mapper = mapper;
         }
         [Authorize(Roles = "Bla Bla Bla.Read")]
         [HttpGet("GetAllGroups")]
         public async Task<IActionResult> GetAllGroups()
         {
-            var groups = await _groupRepository.GetAllGroups();
+            var groups = _groupRepository.GetTableAsTracking();
+
             return Ok(groups);
         }
         [HttpGet("GetGroupById/{id:int}")]
@@ -30,10 +38,12 @@ namespace HRMangmentSystem.API.Controllers
             return Ok(group);
         }
         [HttpPost("CreateGroup")]
-        public async Task<IActionResult> CreateGroup(Group group)
+        public async Task<IActionResult> CreateGroup(GroupCommandDTO group)
         {
-            await _groupRepository.CreateGroup(group);
-            return Ok();
+            var mappedGroup = _mapper.Map<GroupCommandDTO, Group>(group);
+            await _groupRepository.AddAsync(mappedGroup);
+            Response<string> response = new ResponseHandler().Success<string>("Group Created Successfully");
+            return Ok(response);
         }
     }
 }

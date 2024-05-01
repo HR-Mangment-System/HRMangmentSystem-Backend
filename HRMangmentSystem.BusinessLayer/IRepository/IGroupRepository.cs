@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace HRMangmentSystem.BusinessLayer.IRepository
 {
-    public interface IGroupRepository
+    public interface IGroupRepository : IGenericRepositoryAsync<Group>
     {
-        public Task<List<Group>> GetAllGroups();
         public Task<Group> GetGroupById(int id);
-        public Task CreateGroup(Group group);
+
     }
 }

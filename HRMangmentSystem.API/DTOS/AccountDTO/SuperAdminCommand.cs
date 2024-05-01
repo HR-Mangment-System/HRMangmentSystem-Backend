@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HRMangmentSystem.API.DTOS
+namespace HRMangmentSystem.API.DTOS.AccountDTO
 {
-    public class AccountPostDTO
+    public class SuperAdminCommand
     {
         [MaxLength(45, ErrorMessage = "Full name must not exceed 45 characters.")]
         public string FullName { get; set; }
@@ -18,6 +18,5 @@ namespace HRMangmentSystem.API.DTOS
         public string Password { get; set; }
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
-        public int GroupId { get; set; }
     }
 }

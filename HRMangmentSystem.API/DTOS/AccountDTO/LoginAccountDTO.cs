@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HRMangmentSystem.API.DTOS
+namespace HRMangmentSystem.API.DTOS.AccountDTO
 {
     public class LoginAccountDTO
     {

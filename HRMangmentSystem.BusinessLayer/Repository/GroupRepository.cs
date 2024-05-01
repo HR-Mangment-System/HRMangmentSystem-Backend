@@ -10,30 +10,17 @@ using System.Threading.Tasks;
 
 namespace HRMangmentSystem.BusinessLayer.Repository
 {
-    public class GroupRepository : IGroupRepository
+    public class GroupRepository : GenericRepositoryAsync<Group>, IGroupRepository
     {
-        private readonly HRMangmentCotext _db;
-        public GroupRepository(HRMangmentCotext db)
+        private readonly DbSet<Group> _group;
+        public GroupRepository(HRMangmentCotext dbContext) : base(dbContext)
         {
-            _db = db;
-
-        }
-
-        public Task CreateGroup(Group group)
-        {
-            _db.Groups.Add(group);
-            return _db.SaveChangesAsync();
-        }
-
-        public async Task<List<Group>> GetAllGroups()
-        {
-            return await _db.Groups.ToListAsync();
+            _group = dbContext.Set<Group>();
         }
 
         public async Task<Group> GetGroupById(int id)
         {
-            return await _db.Groups.Include(group => group.Permissions).FirstOrDefaultAsync(group => group.Id == id);
+            return await _group.Include(group => group.Permissions).FirstOrDefaultAsync(group => group.Id == id);
         }
-
     }
 }

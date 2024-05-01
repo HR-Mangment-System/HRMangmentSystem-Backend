@@ -8,6 +8,7 @@ namespace HRMangmentSystem.BusinessLayer
     {
         public static IServiceCollection BusinessLayerModuleDependendcies(this IServiceCollection services)
         {
+            services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
             return services;

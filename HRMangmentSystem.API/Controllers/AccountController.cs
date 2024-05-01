@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using HRMangmentSystem.API.DTOS;
+using HRMangmentSystem.API.DTOS.AccountDTO;
 using HRMangmentSystem.API.ResponseBase;
+using HRMangmentSystem.BusinessLayer.Helpers;
 using HRMangmentSystem.BusinessLayer.IRepository;
 using HRMangmentSystem.DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
-using System.Web.Http.ModelBinding;
 
 namespace HRMangmentSystem.API.Controllers
 {
@@ -39,22 +39,45 @@ namespace HRMangmentSystem.API.Controllers
 
         #endregion
 
+        //[HttpPost("CreateSuperAdmin")]
+        //public async Task<IActionResult> CreateAdminAsync(SuperAdminCommand user)
+        //{
+        //    Response<string> response;
+        //    if (await _userManger.FindByEmailAsync(user.Email) != null)
+        //    {
+        //        response = _responseHandler.BadRequest<string>("Email Already Exists");
+        //        return BadRequest(response);
+        //    }
+        //    if (await _userManger.FindByNameAsync(user.Username) is not null)
+        //    {
+        //        response = _responseHandler.BadRequest<string>("Username Already Exists");
+        //        return BadRequest(response);
+        //    }
+        //    var mappedUser = _mapper.Map<SuperAdminCommand, ApplicationUser>(user);
+        //    await _accountRepository.CreateAdminAsync(mappedUser, user.Password, true);
+        //    response = _responseHandler.Success<string>("Super Admin Created Successfully");
+        //    return Ok(response);
+        //}
+
         [HttpPost("CreateAdmin")]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> CreateAdminAsync(AccountPostDTO user)
         {
+            Response<string> response;
             if (await _userManger.FindByEmailAsync(user.Email) != null)
             {
-                Response<string> response = _responseHandler.BadRequest<string>("Email Already Exists");
+                response = _responseHandler.BadRequest<string>("Email Already Exists");
                 return BadRequest(response);
             }
             if (await _userManger.FindByNameAsync(user.Username) is not null)
             {
-                Response<string> response = _responseHandler.BadRequest<string>("Username Already Exists");
+                response = _responseHandler.BadRequest<string>("Username Already Exists");
                 return BadRequest(response);
             }
             var mappedUser = _mapper.Map<AccountPostDTO, ApplicationUser>(user);
-            await _accountRepository.CreateAdminAsync(mappedUser, user.Password, true);
-            return Ok();
+            await _accountRepository.CreateAdminAsync(mappedUser, user.Password, false);
+            response = _responseHandler.Success<string>("Admin Created Successfully");
+            return Ok(response);
         }
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginAccountDTO loginData)
