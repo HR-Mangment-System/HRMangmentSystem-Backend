@@ -38,29 +38,7 @@ namespace HRMangmentSystem.API.Controllers
         }
 
         #endregion
-
-        //[HttpPost("CreateSuperAdmin")]
-        //public async Task<IActionResult> CreateAdminAsync(SuperAdminCommand user)
-        //{
-        //    Response<string> response;
-        //    if (await _userManger.FindByEmailAsync(user.Email) != null)
-        //    {
-        //        response = _responseHandler.BadRequest<string>("Email Already Exists");
-        //        return BadRequest(response);
-        //    }
-        //    if (await _userManger.FindByNameAsync(user.Username) is not null)
-        //    {
-        //        response = _responseHandler.BadRequest<string>("Username Already Exists");
-        //        return BadRequest(response);
-        //    }
-        //    var mappedUser = _mapper.Map<SuperAdminCommand, ApplicationUser>(user);
-        //    await _accountRepository.CreateAdminAsync(mappedUser, user.Password, true);
-        //    response = _responseHandler.Success<string>("Super Admin Created Successfully");
-        //    return Ok(response);
-        //}
-
         [HttpPost("CreateAdmin")]
-        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> CreateAdminAsync(AccountPostDTO user)
         {
             Response<string> response;
