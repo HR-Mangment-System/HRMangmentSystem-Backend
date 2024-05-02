@@ -6,7 +6,7 @@ namespace HRMangmentSystem.BusinessLayer.IRepository
     {
         Task<T> GetByIdAsync(int id);
         Task SaveChangesAsync();
-        IQueryable<T> GetTableAsTracking();
+        List<T> GetTableAsTracking();
         Task<T> AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);

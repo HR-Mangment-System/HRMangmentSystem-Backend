@@ -13,6 +13,8 @@ namespace HRMangmentSystem.API.Mapping.GroupMapping
                 ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.Permissions));
 
             CreateMap<PermissionCommandDTO, Permission>();
+
+            CreateMap<Group, GroupQueryDTO>();
         }
     }
 }

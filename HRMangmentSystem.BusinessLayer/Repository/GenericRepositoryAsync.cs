@@ -44,9 +44,9 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public IQueryable<T> GetTableAsTracking()
+        public List<T> GetTableAsTracking()
         {
-            return _dbContext.Set<T>().AsQueryable();
+            return _dbContext.Set<T>().ToList();
         }
 
         public async Task SaveChangesAsync()

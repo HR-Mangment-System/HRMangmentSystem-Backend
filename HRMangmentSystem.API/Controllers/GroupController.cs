@@ -21,17 +21,15 @@ namespace HRMangmentSystem.API.Controllers
             _groupRepository = groupRepository;
             _mapper = mapper;
         }
-        [Authorize(Roles = "Bla Bla Bla.Read")]
         [HttpGet("GetAllGroups")]
         public async Task<IActionResult> GetAllGroups()
         {
             var groups = _groupRepository.GetTableAsTracking();
-
-            return Ok(groups);
+            var mappedGroups = _mapper.Map<List<Group>, List<GroupQueryDTO>>(groups);
+            Response<List<GroupQueryDTO>> response = new ResponseHandler().Success<List<GroupQueryDTO>>(mappedGroups);
+            return Ok(response);
         }
         [HttpGet("GetGroupById/{id:int}")]
-        [Authorize(Roles = "Bla Bla Bla.Delete")]
-
         public async Task<IActionResult> GetGroupById(int id)
         {
             var group = await _groupRepository.GetGroupById(id);
