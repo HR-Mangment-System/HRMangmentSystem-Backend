@@ -2,7 +2,7 @@
 
 namespace HRMangmentSystem.API.DTOS.AccountDTO
 {
-    public class SuperAdminCommand
+    public class AccountCommandDTO
     {
         [MaxLength(45, ErrorMessage = "Full name must not exceed 45 characters.")]
         public string FullName { get; set; }
@@ -18,5 +18,6 @@ namespace HRMangmentSystem.API.DTOS.AccountDTO
         public string Password { get; set; }
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
+        public int GroupId { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public List<T> GetTableAsTracking()
+        public virtual List<T> GetTableAsTracking()
         {
             return _dbContext.Set<T>().ToList();
         }

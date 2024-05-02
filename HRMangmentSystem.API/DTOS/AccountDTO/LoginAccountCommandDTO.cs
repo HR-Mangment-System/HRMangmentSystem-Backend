@@ -2,7 +2,7 @@
 
 namespace HRMangmentSystem.API.DTOS.AccountDTO
 {
-    public class LoginAccountDTO
+    public class LoginAccountCommandDTO
     {
         public string UsernameOrEmail { get; set; }
         public string Password { get; set; }

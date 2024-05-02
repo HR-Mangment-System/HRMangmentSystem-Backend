@@ -20,19 +20,25 @@ namespace HRMangmentSystem.API.Controllers
         {
             _groupRepository = groupRepository;
             _mapper = mapper;
+            _responseHandler = responseHandler;
         }
         [HttpGet("GetAllGroups")]
         public async Task<IActionResult> GetAllGroups()
         {
             var groups = _groupRepository.GetTableAsTracking();
             var mappedGroups = _mapper.Map<List<Group>, List<GroupQueryDTO>>(groups);
-            Response<List<GroupQueryDTO>> response = new ResponseHandler().Success<List<GroupQueryDTO>>(mappedGroups);
+            Response<List<GroupQueryDTO>> response = _responseHandler.Success<List<GroupQueryDTO>>(mappedGroups);
             return Ok(response);
         }
         [HttpGet("GetGroupById/{id:int}")]
         public async Task<IActionResult> GetGroupById(int id)
         {
             var group = await _groupRepository.GetGroupById(id);
+            if (group == null)
+            {
+                Response<string> response = _responseHandler.NotFound<string>("No Group Found");
+                return NotFound(response);
+            }
             return Ok(group);
         }
         [HttpPost("CreateGroup")]
@@ -40,7 +46,8 @@ namespace HRMangmentSystem.API.Controllers
         {
             var mappedGroup = _mapper.Map<GroupCommandDTO, Group>(group);
             await _groupRepository.AddAsync(mappedGroup);
-            Response<string> response = new ResponseHandler().Success<string>("Group Created Successfully");
+
+            Response<string> response = _responseHandler.Success<string>("Group Created Successfully");
             return Ok(response);
         }
     }

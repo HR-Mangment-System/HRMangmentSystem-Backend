@@ -39,7 +39,7 @@ namespace HRMangmentSystem.API.Controllers
 
         #endregion
         [HttpPost("CreateAdmin")]
-        public async Task<IActionResult> CreateAdminAsync(AccountPostDTO user)
+        public async Task<IActionResult> CreateAdminAsync(AccountCommandDTO user)
         {
             Response<string> response;
             if (await _userManger.FindByEmailAsync(user.Email) != null)
@@ -52,13 +52,13 @@ namespace HRMangmentSystem.API.Controllers
                 response = _responseHandler.BadRequest<string>("Username Already Exists");
                 return BadRequest(response);
             }
-            var mappedUser = _mapper.Map<AccountPostDTO, ApplicationUser>(user);
-            await _accountRepository.CreateAdminAsync(mappedUser, user.Password, false);
+            var mappedUser = _mapper.Map<AccountCommandDTO, ApplicationUser>(user);
+            await _accountRepository.CreateAdminAsync(mappedUser, user.Password);
             response = _responseHandler.Success<string>("Admin Created Successfully");
             return Ok(response);
         }
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginAccountDTO loginData)
+        public async Task<IActionResult> Login(LoginAccountCommandDTO loginData)
         {
             ApplicationUser user;
             if (ModelState.IsValid)

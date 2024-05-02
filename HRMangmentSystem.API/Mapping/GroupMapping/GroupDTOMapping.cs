@@ -5,9 +5,9 @@ using HRMangmentSystem.DataAccessLayer.Models;
 
 namespace HRMangmentSystem.API.Mapping.GroupMapping
 {
-    public class GroupCommandMapping : Profile
+    public class GroupDTOMapping : Profile
     {
-        public GroupCommandMapping()
+        public GroupDTOMapping()
         {
             CreateMap<GroupCommandDTO, Group>().
                 ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.Permissions));

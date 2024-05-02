@@ -11,6 +11,8 @@ namespace HRMangmentSystem.BusinessLayer
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IDepartmentRepository, DepartmentRepository>();
             return services;
         }
 

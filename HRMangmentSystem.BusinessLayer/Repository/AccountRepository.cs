@@ -29,24 +29,16 @@ namespace HRMangmentSystem.BusinessLayer.Repository
         }
 
 
-        public async Task CreateAdminAsync(ApplicationUser user, string password, bool isSuperAdmin)
+        public async Task CreateAdminAsync(ApplicationUser user, string password)
         {
             IdentityResult result = await _userManger.CreateAsync(user, password);
 
             if (result.Succeeded)
             {
-                if (isSuperAdmin)
-                {
-                    if (!await _roleManager.RoleExistsAsync(UserRoles.SuperAdmin))
-                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.SuperAdmin));
-                    await _userManger.AddToRoleAsync(user, UserRoles.SuperAdmin);
-                }
-                else
-                {
-                    if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-                    await _userManger.AddToRoleAsync(user, UserRoles.Admin);
-                }
+                if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+                    await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+                await _userManger.AddToRoleAsync(user, UserRoles.Admin);
+
                 if (user.GroupId != null)
                 {
                     List<string> roles = await AddUserRoles(user.GroupId.Value);
@@ -57,7 +49,6 @@ namespace HRMangmentSystem.BusinessLayer.Repository
                 }
             }
         }
-
         public async Task<string> CreateLoginTokenAsync(ApplicationUser user)
         {
             var userClaims = new List<Claim>();
