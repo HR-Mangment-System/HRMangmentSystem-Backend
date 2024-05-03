@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HRMangmentSystem.DataAccessLayer.Models
+﻿namespace HRMangmentSystem.API.DTOS.SettingsDto
 {
-    public class GeneralSettings
+    public class SettingsQueryDto
     {
         public int Id { get; set; }
         public decimal BonusRate { get; set; }

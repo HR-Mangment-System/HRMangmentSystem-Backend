@@ -13,6 +13,8 @@ namespace HRMangmentSystem.BusinessLayer
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddTransient<IDepartmentRepository, DepartmentRepository>();
+            services.AddTransient<ISettingsRepository, SettingsRepository>();
+            services.AddTransient<IAnnualHolidaysRepository, AnnualHolidaysRepository>();
             return services;
         }
 

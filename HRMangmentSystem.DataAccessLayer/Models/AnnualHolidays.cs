@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace HRMangmentSystem.DataAccessLayer.Models
 {
-    public class OfficialHolidays
+    public class AnnualHolidays
     {
         [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "You must Enter The Holiday Name")]
         public string HolidayName { get; set; }
-        public DateTime HolidayDate { get; set; }
+        public DateOnly HolidayDate { get; set; }
     }
 }
