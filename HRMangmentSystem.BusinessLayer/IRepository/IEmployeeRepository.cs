@@ -6,6 +6,7 @@ namespace HRMangmentSystem.BusinessLayer.IRepository
     {
         public Task<Employee> GetEmployeeByNationalId(string nationalId);
         public List<Employee> GetEmployeeByDepartmentId(int departmentId);
+        public List<Employee> GetEmployeeByName(string name);
 
     }
 }

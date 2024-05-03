@@ -30,5 +30,9 @@ namespace HRMangmentSystem.BusinessLayer.Repository
         {
             return _employees.Include(employee => employee.Department).Where(emp => emp.DepartmentId == departmentId).ToList();
         }
+        public List<Employee> GetEmployeeByName(string name)
+        {
+            return _employees.Select(employee => employee).Where(emp => emp.Name.Contains(name)).ToList();
+        }
     }
 }

@@ -121,6 +121,21 @@ namespace HRMangmentSystem.API.Controllers
             response = _responseHandler.Success<List<EmployeeQueryDTO>>(mappedEmployees);
             return Ok(response);
         }
+        [HttpGet("GetEmployeeByName")]
+        public async Task<IActionResult> GetEmployeeByName(string Name)
+        {
+            dynamic response;
+            var employees = _employeeRepository.GetEmployeeByName(Name);
+            if (employees == null)
+            {
+                response = _responseHandler.NotFound<string>("No Employees Found");
+                return NotFound(response);
+            }
+            List<EmployeeQueryDTO> mappedEmployees = _mapper.Map<List<Employee>, List<EmployeeQueryDTO>>(employees);
+            mappedEmployees = mappedEmployees.Where(emp => emp.IsDeleted == false).ToList();
+            response = _responseHandler.Success<List<EmployeeQueryDTO>>(mappedEmployees);
+            return Ok(response);
+        }
         #endregion
     }
 }
