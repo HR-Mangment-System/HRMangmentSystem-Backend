@@ -23,6 +23,9 @@ namespace HRMangmentSystem.DataAccessLayer.Context
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<GeneralSettings> GeneralSettings { get; set; }
+        public DbSet<OfficialHolidays> OfficialHolidays { get; set;}
+        public DbSet<AttendanceRecord> AttendanceRecords { get; set; }
 
     }
 

@@ -4,6 +4,7 @@ using HRMangmentSystem.DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRMangmentSystem.DataAccessLayer.Migrations
 {
     [DbContext(typeof(HRMangmentCotext))]
-    partial class HRMangmentCotextModelSnapshot : ModelSnapshot
+    [Migration("20240503130715_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,40 +160,6 @@ namespace HRMangmentSystem.DataAccessLayer.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("HRMangmentSystem.DataAccessLayer.Models.AttendanceRecord", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<TimeOnly?>("ArrivalTime")
-                        .HasColumnType("time");
-
-                    b.Property<DateTime?>("AttendanceDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeOnly?>("DepartureTime")
-                        .HasColumnType("time");
-
-                    b.Property<string>("EmployeeSSN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(14)");
-
-                    b.Property<bool?>("IsOnTime")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Isabsent")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeSSN");
-
-                    b.ToTable("AttendanceRecords");
-                });
-
             modelBuilder.Entity("HRMangmentSystem.DataAccessLayer.Models.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -211,29 +180,6 @@ namespace HRMangmentSystem.DataAccessLayer.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("HRMangmentSystem.DataAccessLayer.Models.GeneralSettings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("BonusRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("PenaltyRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("WeeklyHolidays")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GeneralSettings");
-                });
-
             modelBuilder.Entity("HRMangmentSystem.DataAccessLayer.Models.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -249,26 +195,6 @@ namespace HRMangmentSystem.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("HRMangmentSystem.DataAccessLayer.Models.OfficialHolidays", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("HolidayDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("HolidayName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OfficialHolidays");
                 });
 
             modelBuilder.Entity("HRMangmentSystem.DataAccessLayer.Models.Permission", b =>
@@ -456,17 +382,6 @@ namespace HRMangmentSystem.DataAccessLayer.Migrations
                         .HasForeignKey("GroupId");
 
                     b.Navigation("Group");
-                });
-
-            modelBuilder.Entity("HRMangmentSystem.DataAccessLayer.Models.AttendanceRecord", b =>
-                {
-                    b.HasOne("HRManagementSystem.DataAccessLayer.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeSSN")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("HRMangmentSystem.DataAccessLayer.Models.Permission", b =>
