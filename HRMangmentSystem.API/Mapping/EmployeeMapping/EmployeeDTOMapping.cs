@@ -10,8 +10,9 @@ namespace HRMangmentSystem.API.Mapping.EmployeeMapping
         {
             CreateMap<Employee, EmployeeQueryDTO>()
             .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name));
-            CreateMap<EmployeeCommandDTO, Employee>();
+            CreateMap<EmployeeCommandDTO, Employee>(); 
         }
 
     }
+
 }

@@ -12,10 +12,10 @@ namespace HRMangmentSystem.BusinessLayer.Repository
 {
     public class AnnualHolidaysRepository:GenericRepositoryAsync<AnnualHolidays>,IAnnualHolidaysRepository
     {
-        private readonly DbSet<AnnualHolidays> _settings;
+        private readonly DbSet<AnnualHolidays> _holiday;
         public AnnualHolidaysRepository(HRMangmentCotext dbContext) : base(dbContext)
         {
-            _settings = dbContext.Set<AnnualHolidays>();
+            _holiday = dbContext.Set<AnnualHolidays>();
         }
     }
 }
