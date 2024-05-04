@@ -29,33 +29,33 @@ namespace HRMangmentSystem.API.Controllers
         {
             dynamic response;
             var holidays = _annualHolidaysRepository.GetTableAsTracking();
-            if(holidays == null || holidays.Count == 0)
+            if (holidays == null || holidays.Count == 0)
             {
                 response = _responseHandler.NotFound<string>("No Holidays Found");
                 return NotFound(response);
             }
-           var mappedSettings= _mapper.Map<List<AnnualHolidays>, List<AnnualHolidaysQueryDTO>>(holidays);
+            var mappedSettings = _mapper.Map<List<AnnualHolidays>, List<AnnualHolidaysQueryDTO>>(holidays);
             response = _responseHandler.Success<List<AnnualHolidaysQueryDTO>>(mappedSettings);
             return Ok(response);
 
         }
         [HttpPut("EditHoliday")]
-        public async Task<IActionResult>EditHoliday(AnnualHolidaysCommandDTO annualHolidaysCommandDTO)
+        public async Task<IActionResult> EditHoliday(AnnualHolidaysCommandDTO annualHolidaysCommandDTO)
         {
             dynamic response;
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var mappedSettings = _mapper.Map<AnnualHolidaysCommandDTO, AnnualHolidays>(annualHolidaysCommandDTO);
-               await _annualHolidaysRepository.UpdateAsync(mappedSettings);
-                response =   _responseHandler.Success<AnnualHolidaysCommandDTO>(annualHolidaysCommandDTO);
+                await _annualHolidaysRepository.UpdateAsync(mappedSettings);
+                response = _responseHandler.Success<AnnualHolidaysCommandDTO>(annualHolidaysCommandDTO);
                 return Ok(response);
             }
             response = _responseHandler.NotFound<string>("No Holiday Found");
             return NotFound(response);
-          
+
         }
         [HttpDelete("DeleteHoliday")]
-        public async Task<IActionResult>DeleteHoliday(int holidayId)
+        public async Task<IActionResult> DeleteHoliday(int holidayId)
         {
             dynamic response;
             var entity = await _annualHolidaysRepository.GetByIdAsync(holidayId);
@@ -69,13 +69,13 @@ namespace HRMangmentSystem.API.Controllers
             return Ok(response);
         }
         [HttpPost("CreateHoliday")]
-        public async Task<IActionResult>CreateHoliday(AnnualHolidaysCommandDTO annualHolidaysCommandDTO)
+        public async Task<IActionResult> CreateHoliday(AnnualHolidaysCommandDTO annualHolidaysCommandDTO)
         {
             dynamic response;
             if (ModelState.IsValid)
             {
                 var mappedHolidayEntity = _mapper.Map<AnnualHolidaysCommandDTO, AnnualHolidays>(annualHolidaysCommandDTO);
-                _annualHolidaysRepository.AddAsync(mappedHolidayEntity);
+                await _annualHolidaysRepository.AddAsync(mappedHolidayEntity);
                 response = _responseHandler.Success<string>("Added Successfully");
                 return Ok(response);
 
