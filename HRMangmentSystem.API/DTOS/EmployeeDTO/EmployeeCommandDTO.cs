@@ -1,6 +1,7 @@
 ﻿using HRMangmentSystem.DataAccessLayer.CustomValidators;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace HRMangmentSystem.API.DTOS.EmployeeDTO
 {
@@ -46,11 +47,9 @@ namespace HRMangmentSystem.API.DTOS.EmployeeDTO
         public double Salary { get; set; }
 
         [Required(ErrorMessage = "Attendance time is required.")]
-        public DateTime AttendanceTime { get; set; }
-
+        public string AttendanceTime { get; set; }
         [Required(ErrorMessage = "Departure time is required.")]
-        public DateTime DepartureTime { get; set; }
-
+        public string DepartureTime { get; set; }
         public bool IsDeleted { get; set; }
 
         public int DepartmentId { get; set; }

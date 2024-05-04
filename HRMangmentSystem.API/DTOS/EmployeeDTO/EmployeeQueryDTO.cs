@@ -12,13 +12,13 @@ namespace HRMangmentSystem.API.DTOS.EmployeeDTO
         public string Phone { get; set; }
         public string Address { get; set; }
         public char Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
         public string Nationality { get; set; }
         public string NationalId { get; set; }
-        public DateTime HireDate { get; set; }
+        public DateOnly HireDate { get; set; }
         public double Salary { get; set; }
-        public DateTime AttendanceTime { get; set; }
-        public DateTime DepartureTime { get; set; }
+        public TimeOnly AttendanceTime { get; set; }
+        public TimeOnly DepartureTime { get; set; }
         public bool IsDeleted { get; set; }
         public string DepartmentName { get; set; }
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HRMangmentSystem.BusinessLayer.Repository
 {
-    public class AttendanceReportRepository:GenericRepositoryAsync<AttendanceRecord>,IAttendanceReportRepository
+    public class AttendanceReportRepository : GenericRepositoryAsync<AttendanceRecord>, IAttendanceReportRepository
     {
         private readonly DbSet<AttendanceRecord> _attendance;
         public AttendanceReportRepository(HRMangmentCotext dbContext) : base(dbContext)
@@ -20,9 +20,9 @@ namespace HRMangmentSystem.BusinessLayer.Repository
         }
         public override List<AttendanceRecord> GetTableAsTracking()
         {
-            return _attendance.Include(emp => emp.Employee).ThenInclude(emp => emp.Department).Select(
-              
+            return _attendance.Include(emp => emp.Employee).
+                ThenInclude(dept => dept.Department).ToList();
         }
-       
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HRManagementSystem.DataAccessLayer.Models;
 using HRMangmentSystem.API.DTOS.AnnualHolidaysDTO;
 using HRMangmentSystem.API.DTOS.AttendanceReportDTO;
 using HRMangmentSystem.API.DTOS.DepartmentDTO;
@@ -6,16 +7,20 @@ using HRMangmentSystem.DataAccessLayer.Models;
 
 namespace HRMangmentSystem.API.Mapping.AttendanceReportMapping
 {
-    public class AttendanceReportDTOMapping:Profile
+    public class AttendanceReportDTOMapping : Profile
     {
         public AttendanceReportDTOMapping()
         {
+            CreateMap<AttendanceRecord, AttendanceReportQueryDto>()
+            .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.Employee.Name))
+            .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Employee.Department.Name));
 
-            CreateMap<dynamic, AttendanceReportQueryDto>()
-                .ForMember(dest => dest.EmployeeNationalId, opt => opt.MapFrom(src => src.EmployeeNationalId))
-                .ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.EmployeeName))
-                .ForMember(dest => dest.Department, opt => opt.MapFrom(src => src.DepartmentName));
 
+            CreateMap<AttendanceReportCommandDto, AttendanceRecord>()
+                .ForMember(dest => dest.AttendanceDate, opt => opt.MapFrom(src => DateOnly.Parse(src.AttendanceDate)))
+                .ForMember(dest => dest.ArrivalTime, opt => opt.MapFrom(src => TimeOnly.Parse(src.ArrivalTime)))
+                .ForMember(dest => dest.DepartureTime, opt => opt.MapFrom(src => TimeOnly.Parse(src.DepartureTime)))
+                ;
         }
     }
 }

@@ -4,6 +4,7 @@ using HRMangmentSystem.DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRMangmentSystem.DataAccessLayer.Migrations
 {
     [DbContext(typeof(HRMangmentCotext))]
-    partial class HRMangmentCotextModelSnapshot : ModelSnapshot
+    [Migration("20240504023424_v11")]
+    partial class v11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +39,8 @@ namespace HRMangmentSystem.DataAccessLayer.Migrations
                     b.Property<TimeOnly>("AttendanceTime")
                         .HasColumnType("time");
 
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
@@ -53,8 +56,8 @@ namespace HRMangmentSystem.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<DateOnly>("HireDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -185,30 +188,24 @@ namespace HRMangmentSystem.DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<TimeOnly?>("ArrivalTime")
+                    b.Property<TimeOnly>("ArrivalTime")
                         .HasColumnType("time");
 
                     b.Property<DateOnly>("AttendanceDate")
                         .HasColumnType("date");
 
-                    b.Property<TimeOnly?>("DepartureTime")
+                    b.Property<TimeOnly>("DepartureTime")
                         .HasColumnType("time");
-
-                    b.Property<int?>("EarlyLeaveHours")
-                        .HasColumnType("int");
 
                     b.Property<string>("EmployeeNationalId")
                         .IsRequired()
                         .HasColumnType("nvarchar(14)");
 
-                    b.Property<bool?>("Isabsent")
+                    b.Property<bool?>("IsOnTime")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LateHours")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OvertimeHours")
-                        .HasColumnType("int");
+                    b.Property<bool?>("Isabsent")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

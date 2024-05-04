@@ -30,7 +30,7 @@ namespace HRManagementSystem.DataAccessLayer.Models
         [Required(ErrorMessage = "Date of birth is required.")]
         [DataType(DataType.Date)]
         [MinimumAge(21, ErrorMessage = "You must be at least 21 years old.")]
-        public DateTime DateOfBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
 
         [MaxLength(50, ErrorMessage = "Nationality cannot exceed 50 characters.")]
         public string Nationality { get; set; }
@@ -41,17 +41,17 @@ namespace HRManagementSystem.DataAccessLayer.Models
         [Required(ErrorMessage = "Hire date is required.")]
         [DataType(DataType.Date)]
         [MinimumHireDate(ErrorMessage = "Hire date must be on or after January 1, 2008.")]
-        public DateTime HireDate { get; set; }
+        public DateOnly HireDate { get; set; }
 
         [DataType(DataType.Currency)]
         [Range(0, double.MaxValue, ErrorMessage = "Salary must be a positive value.")]
         public double Salary { get; set; }
 
         [Required(ErrorMessage = "Attendance time is required.")]
-        public DateTime AttendanceTime { get; set; }
+        public TimeOnly AttendanceTime { get; set; }
 
         [Required(ErrorMessage = "Departure time is required.")]
-        public DateTime DepartureTime { get; set; }
+        public TimeOnly DepartureTime { get; set; }
 
         public bool IsDeleted { get; set; }
 
