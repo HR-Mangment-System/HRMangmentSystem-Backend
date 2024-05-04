@@ -7,6 +7,7 @@ using HRMangmentSystem.BusinessLayer.IRepository;
 using HRMangmentSystem.DataAccessLayer.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Contracts;
 
 namespace HRMangmentSystem.API.Controllers
 {
@@ -97,6 +98,59 @@ namespace HRMangmentSystem.API.Controllers
             return Ok(response);
         }
 
+        [HttpPost("AddAttendanceReportFromExcel")]
+        public async Task<IActionResult> AddAttendanceReportFromExcel(List<AttendanceReportCommandDto> attendanceReportCommandDtos)
+        {
+            dynamic response;
+            if (ModelState.IsValid)
+            {
+                foreach (AttendanceReportCommandDto record in attendanceReportCommandDtos)
+                {
+                    var employee = _mapper.Map<Employee, EmployeeQueryDTO>(await _employeeRepository.GetEmployeeByNationalId(record.EmployeeNationalId));
+                    if (employee.AttendanceTime != TimeOnly.Parse(record.ArrivalTime))
+                    {
+                        record.LateHours = (TimeOnly.Parse(record.ArrivalTime) - employee.AttendanceTime).Hours;
+                    }
+                    if (employee.DepartureTime != TimeOnly.Parse(record.DepartureTime))
+                    {
+                        record.EarlyLeaveHours = (employee.DepartureTime - TimeOnly.Parse(record.DepartureTime)).Hours;
+                    }
+                    else if (employee.DepartureTime < TimeOnly.Parse(record.DepartureTime))
+                    {
+                        record.OvertimeHours = (TimeOnly.Parse(record.DepartureTime) - employee.DepartureTime).Hours;
+                    }
+                }
+                var attendanceReport = _mapper.Map<List<AttendanceReportCommandDto>, List<AttendanceRecord>>(attendanceReportCommandDtos);
+                await _attendanceReportRepository.AddRangeAsync(attendanceReport);
+                response = _responseHandler.Success("Added Successfully");
+                return Ok(response);
+
+            }
+            response = _responseHandler.BadRequest<string>("Invalid Data");
+            return BadRequest(response);
+        }
+        [HttpGet("GetAttendanceReportWithFilter")]
+        public async Task<IActionResult> GetAttendanceReportWithFilter(string EmpNameOrDeptName, string FromDate, string ToDate)
+        {
+            dynamic response;
+            if (ModelState.IsValid)
+            {
+                DateOnly _fromDate = DateOnly.Parse(FromDate);
+                DateOnly _toDate = DateOnly.Parse(ToDate);
+                var attendanceReport = _attendanceReportRepository.GetWithFilter(EmpNameOrDeptName, _fromDate, _toDate);
+                if (attendanceReport == null)
+                {
+                    response = _responseHandler.NotFound<string>("No Reports Found");
+                    return NotFound(response);
+                }
+                var mappedData = _mapper.Map<List<AttendanceRecord>, List<AttendanceReportQueryDto>>(attendanceReport);
+                response = _responseHandler.Success(mappedData);
+                return Ok(response);
+            }
+            response = _responseHandler.BadRequest<string>("Enter Valid Date");
+            return BadRequest(response);
+
+        }
     }
 
 }

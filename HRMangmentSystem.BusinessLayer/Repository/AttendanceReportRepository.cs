@@ -18,11 +18,33 @@ namespace HRMangmentSystem.BusinessLayer.Repository
         {
             _attendance = dbContext.Set<AttendanceRecord>();
         }
+
+        public async Task AddRangeAsync(List<AttendanceRecord> entities)
+        {
+            await _attendance.AddRangeAsync(entities);
+            await SaveChangesAsync();
+        }
+
         public override List<AttendanceRecord> GetTableAsTracking()
         {
             return _attendance.Include(emp => emp.Employee).
                 ThenInclude(dept => dept.Department).ToList();
         }
 
+        public List<AttendanceRecord> GetWithFilter(string EmpNameOrDeptName, DateOnly FromDate, DateOnly ToDate)
+        {
+            var query = _attendance.Include(emp => emp.Employee)
+                                    .ThenInclude(dept => dept.Department)
+                                    .Where(record =>
+                                        (record.Employee.Name.Contains(EmpNameOrDeptName) ||
+                                        record.Employee.Department.Name.Contains(EmpNameOrDeptName))
+                                        &&
+                                        (record.AttendanceDate.CompareTo(FromDate) >= 0 && record.AttendanceDate.CompareTo(ToDate) <= 0)
+                                    )
+                                    .ToList();
+
+            return query;
+            return query;
+        }
     }
 }
