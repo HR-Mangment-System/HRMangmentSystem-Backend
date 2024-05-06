@@ -146,7 +146,7 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             var settings = _settingsRepository.GetTableAsTracking();
             decimal bonusRate = settings[0].BonusRate;
             decimal penalityRate = settings[0].PenaltyRate;
-            if (emplName == null)
+            if (emplName == null || emplName == "")
             {
                 var allEmps = _employeeRepository.GetTableAsTracking();
                 foreach (var emp in allEmps)
