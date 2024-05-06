@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace HRMangmentSystem.BusinessLayer.IRepository
 {
-    public interface IAnnualHolidaysRepository:IGenericRepositoryAsync<AnnualHolidays>
+    public interface IAnnualHolidaysRepository : IGenericRepositoryAsync<AnnualHolidays>
     {
-
+        List<DateOnly> FilterByDate(DateOnly from, DateOnly to);
     }
 }

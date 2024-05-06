@@ -59,21 +59,27 @@ namespace HRMangmentSystem.API.Controllers
         public async Task<IActionResult> AddAttendanceReport(AttendanceReportCommandDto attendanceReportCommandDto)
         {
             dynamic response;
+            int noOfOverTimeHours = 0;
             if (ModelState.IsValid)
             {
                 var employee = _mapper.Map<Employee, EmployeeQueryDTO>(await _employeeRepository.GetEmployeeByNationalId(attendanceReportCommandDto.EmployeeNationalId));
-                if (employee.AttendanceTime != TimeOnly.Parse(attendanceReportCommandDto.ArrivalTime))
+                if (employee.AttendanceTime < TimeOnly.Parse(attendanceReportCommandDto.ArrivalTime))
                 {
                     attendanceReportCommandDto.LateHours = (TimeOnly.Parse(attendanceReportCommandDto.ArrivalTime) - employee.AttendanceTime).Hours;
                 }
-                if (employee.DepartureTime != TimeOnly.Parse(attendanceReportCommandDto.DepartureTime))
+                if (employee.AttendanceTime > TimeOnly.Parse(attendanceReportCommandDto.ArrivalTime))
+                {
+                    noOfOverTimeHours += (employee.AttendanceTime - TimeOnly.Parse(attendanceReportCommandDto.ArrivalTime)).Hours;
+                }
+                if (employee.DepartureTime > TimeOnly.Parse(attendanceReportCommandDto.DepartureTime))
                 {
                     attendanceReportCommandDto.EarlyLeaveHours = (employee.DepartureTime - TimeOnly.Parse(attendanceReportCommandDto.DepartureTime)).Hours;
                 }
                 else if (employee.DepartureTime < TimeOnly.Parse(attendanceReportCommandDto.DepartureTime))
                 {
-                    attendanceReportCommandDto.OvertimeHours = (TimeOnly.Parse(attendanceReportCommandDto.DepartureTime) - employee.DepartureTime).Hours;
+                    noOfOverTimeHours += (TimeOnly.Parse(attendanceReportCommandDto.DepartureTime) - employee.DepartureTime).Hours;
                 }
+                attendanceReportCommandDto.OvertimeHours = noOfOverTimeHours;
                 var attendanceReport = _mapper.Map<AttendanceReportCommandDto, AttendanceRecord>(attendanceReportCommandDto);
                 await _attendanceReportRepository.AddAsync(attendanceReport);
                 response = _responseHandler.Success("Added Successfully");
@@ -101,24 +107,30 @@ namespace HRMangmentSystem.API.Controllers
         [HttpPost("AddAttendanceReportFromExcel")]
         public async Task<IActionResult> AddAttendanceReportFromExcel(List<AttendanceReportCommandDto> attendanceReportCommandDtos)
         {
+            int noOfOverTimeHours = 0;
             dynamic response;
             if (ModelState.IsValid)
             {
                 foreach (AttendanceReportCommandDto record in attendanceReportCommandDtos)
                 {
                     var employee = _mapper.Map<Employee, EmployeeQueryDTO>(await _employeeRepository.GetEmployeeByNationalId(record.EmployeeNationalId));
-                    if (employee.AttendanceTime != TimeOnly.Parse(record.ArrivalTime))
+                    if (employee.AttendanceTime < TimeOnly.Parse(record.ArrivalTime))
                     {
                         record.LateHours = (TimeOnly.Parse(record.ArrivalTime) - employee.AttendanceTime).Hours;
                     }
-                    if (employee.DepartureTime != TimeOnly.Parse(record.DepartureTime))
+                    if (employee.AttendanceTime > TimeOnly.Parse(record.ArrivalTime))
+                    {
+                        noOfOverTimeHours += (employee.AttendanceTime - TimeOnly.Parse(record.ArrivalTime)).Hours;
+                    }
+                    if (employee.DepartureTime > TimeOnly.Parse(record.DepartureTime))
                     {
                         record.EarlyLeaveHours = (employee.DepartureTime - TimeOnly.Parse(record.DepartureTime)).Hours;
                     }
                     else if (employee.DepartureTime < TimeOnly.Parse(record.DepartureTime))
                     {
-                        record.OvertimeHours = (TimeOnly.Parse(record.DepartureTime) - employee.DepartureTime).Hours;
+                        noOfOverTimeHours += (TimeOnly.Parse(record.DepartureTime) - employee.DepartureTime).Hours;
                     }
+                    record.OvertimeHours = noOfOverTimeHours;
                 }
                 var attendanceReport = _mapper.Map<List<AttendanceReportCommandDto>, List<AttendanceRecord>>(attendanceReportCommandDtos);
                 await _attendanceReportRepository.AddRangeAsync(attendanceReport);

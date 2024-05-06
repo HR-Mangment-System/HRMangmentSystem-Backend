@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace HRMangmentSystem.BusinessLayer.IRepository
 {
-    public interface ISettingsRepository:IGenericRepositoryAsync<GeneralSettings>
+    public interface ISettingsRepository : IGenericRepositoryAsync<GeneralSettings>
     {
-
     }
 }

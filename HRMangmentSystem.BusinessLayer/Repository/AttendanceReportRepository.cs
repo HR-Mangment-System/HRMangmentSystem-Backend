@@ -25,6 +25,18 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             await SaveChangesAsync();
         }
 
+        public List<AttendanceRecord> GetAttendanceInRange(DateOnly FromDate, DateOnly ToDate)
+        {
+            var query = _attendance.Include(emp => emp.Employee)
+                                    .ThenInclude(dept => dept.Department)
+                                    .Where(record =>
+                                        (record.AttendanceDate.CompareTo(FromDate) >= 0 && record.AttendanceDate.CompareTo(ToDate) <= 0)
+                                    )
+                                    .ToList();
+
+            return query;
+        }
+
         public override List<AttendanceRecord> GetTableAsTracking()
         {
             return _attendance.Include(emp => emp.Employee).
@@ -43,7 +55,6 @@ namespace HRMangmentSystem.BusinessLayer.Repository
                                     )
                                     .ToList();
 
-            return query;
             return query;
         }
     }
