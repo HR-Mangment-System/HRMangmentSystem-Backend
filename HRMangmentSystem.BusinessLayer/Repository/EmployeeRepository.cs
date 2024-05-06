@@ -32,7 +32,7 @@ namespace HRMangmentSystem.BusinessLayer.Repository
         }
         public List<Employee> GetEmployeeByName(string name)
         {
-            return _employees.Select(employee => employee).Where(emp => emp.Name.Contains(name)).ToList();
+            return _employees.Include(dept => dept.Department).Select(employee => employee).Where(emp => emp.Name.Contains(name)).ToList();
         }
     }
 }

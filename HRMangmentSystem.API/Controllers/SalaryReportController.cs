@@ -1,4 +1,8 @@
-﻿using HRMangmentSystem.BusinessLayer.IRepository;
+﻿using AutoMapper;
+using HRMangmentSystem.API.DTOS.SalaryReportDTO;
+using HRMangmentSystem.API.ResponseBase;
+using HRMangmentSystem.BusinessLayer.Helpers;
+using HRMangmentSystem.BusinessLayer.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,14 +13,32 @@ namespace HRMangmentSystem.API.Controllers
     public class SalaryReportController : ControllerBase
     {
         private readonly ISalaryRepository _salaryRepository;
-        public SalaryReportController(ISalaryRepository salaryRepository)
+        private readonly IMapper _mapper;
+        private readonly ResponseHandler _responseHandler;
+        public SalaryReportController(ISalaryRepository salaryRepository, IMapper mapper, ResponseHandler responseHandler)
         {
             _salaryRepository = salaryRepository;
+            _mapper = mapper;
+            _responseHandler = responseHandler;
         }
         [HttpGet("GetSalaries")]
-        public IActionResult GetSalaries(string date)
+        public IActionResult GetSalaries(string? employeeName, string date)
         {
-            return Ok(_salaryRepository.CalculateSalary(null, DateOnly.Parse(date)));
+            dynamic response;
+            if (ModelState.IsValid)
+            {
+                var salaryReport = _salaryRepository.CalculateSalary(employeeName, DateOnly.Parse(date));
+                if (salaryReport == null)
+                {
+                    response = _responseHandler.NotFound<string>("No Salaries Found");
+                    return NotFound(response);
+                }
+                var mappedSalaries = _mapper.Map<List<SalaryReportData>, List<SalaryReportQueryDTO>>(salaryReport);
+                response = _responseHandler.Success(mappedSalaries);
+                return Ok(response);
+            }
+            response = _responseHandler.BadRequest<string>("Invalid Data");
+            return BadRequest(response);
         }
     }
 }

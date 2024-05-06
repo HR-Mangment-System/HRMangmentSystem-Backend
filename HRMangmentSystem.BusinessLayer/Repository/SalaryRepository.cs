@@ -2,11 +2,6 @@
 using HRMangmentSystem.BusinessLayer.Helpers;
 using HRMangmentSystem.BusinessLayer.IRepository;
 using HRMangmentSystem.DataAccessLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRMangmentSystem.BusinessLayer.Repository
 {
@@ -156,17 +151,22 @@ namespace HRMangmentSystem.BusinessLayer.Repository
                 var allEmps = _employeeRepository.GetTableAsTracking();
                 foreach (var emp in allEmps)
                 {
-                    SalaryReportData salaryReportData = new SalaryReportData();
-                    salaryReportData.EmployeeName = emp.Name;
-                    salaryReportData.BaseSalary = emp.Salary;
-                    salaryReportData.TotalAbsentDays = CalculateAbsent(emp.NationalId, from).Result;
-                    salaryReportData.PenalityHours = CalculateLate(emp.NationalId, from).Result + CalculateEarlyLeave(emp.NationalId, from).Result;
-                    salaryReportData.TotalOvertimeHours = CalculateOvertime(emp.NationalId, from).Result;
-                    salaryReportData.TotalSalary = CalculateNetSalary(emp.NationalId, from);
-                    salaryReportData.TotalAttendanceDays = CalculateTotalWorkingDays(emp.Name, from);
-                    salaryReportData.TotalBounus = CalculateTotalBonus(CalculateOvertime(emp.NationalId, from).Result, emp.Salary, bonusRate);
-                    salaryReportData.TotalPenality = CalculateTotalPenality(CalculateLate(emp.NationalId, from).Result + CalculateEarlyLeave(emp.NationalId, from).Result + (CalculateAbsent(emp.NationalId, from).Result * calcualateNoOfWorkingHourPerEmp(emp)), emp.Salary, penalityRate);
-                    Data.Add(salaryReportData);
+                    if (emp.IsDeleted == false)
+                    {
+                        SalaryReportData salaryReportData = new SalaryReportData();
+                        salaryReportData.EmployeeName = emp.Name;
+                        salaryReportData.BaseSalary = emp.Salary;
+                        salaryReportData.DepartmentName = emp.Department.Name;
+                        salaryReportData.TotalAbsentDays = CalculateAbsent(emp.NationalId, from).Result;
+                        salaryReportData.PenalityHours = CalculateLate(emp.NationalId, from).Result + CalculateEarlyLeave(emp.NationalId, from).Result;
+                        salaryReportData.TotalOvertimeHours = CalculateOvertime(emp.NationalId, from).Result;
+                        salaryReportData.TotalSalary = CalculateNetSalary(emp.NationalId, from);
+                        salaryReportData.TotalAttendanceDays = CalculateTotalWorkingDays(emp.Name, from);
+                        salaryReportData.TotalBounus = CalculateTotalBonus(CalculateOvertime(emp.NationalId, from).Result, emp.Salary, bonusRate);
+                        salaryReportData.TotalPenality = CalculateTotalPenality(CalculateLate(emp.NationalId, from).Result + CalculateEarlyLeave(emp.NationalId, from).Result + (CalculateAbsent(emp.NationalId, from).Result * calcualateNoOfWorkingHourPerEmp(emp)), emp.Salary, penalityRate);
+                        Data.Add(salaryReportData);
+
+                    }
                 }
             }
             else
@@ -174,17 +174,21 @@ namespace HRMangmentSystem.BusinessLayer.Repository
                 List<Employee> employee = _employeeRepository.GetEmployeeByName(emplName);
                 foreach (var emp in employee)
                 {
-                    SalaryReportData salaryReportData = new SalaryReportData();
-                    salaryReportData.EmployeeName = emp.Name;
-                    salaryReportData.BaseSalary = emp.Salary;
-                    salaryReportData.TotalAbsentDays = CalculateAbsent(emp.NationalId, from).Result;
-                    salaryReportData.PenalityHours = CalculateLate(emp.NationalId, from).Result + CalculateEarlyLeave(emp.NationalId, from).Result;
-                    salaryReportData.TotalOvertimeHours = CalculateOvertime(emp.NationalId, from).Result;
-                    salaryReportData.TotalSalary = CalculateNetSalary(emp.NationalId, from);
-                    salaryReportData.TotalAttendanceDays = CalculateTotalWorkingDays(emp.Name, from);
-                    salaryReportData.TotalBounus = CalculateTotalBonus(CalculateOvertime(emp.NationalId, from).Result, emp.Salary, bonusRate);
-                    salaryReportData.TotalPenality = CalculateTotalPenality(CalculateLate(emp.NationalId, from).Result + CalculateEarlyLeave(emp.NationalId, from).Result + (CalculateAbsent(emp.NationalId, from).Result * calcualateNoOfWorkingHourPerEmp(emp)), emp.Salary, penalityRate);
-                    Data.Add(salaryReportData);
+                    if (emp.IsDeleted == false)
+                    {
+                        SalaryReportData salaryReportData = new SalaryReportData();
+                        salaryReportData.EmployeeName = emp.Name;
+                        salaryReportData.BaseSalary = emp.Salary;
+                        salaryReportData.DepartmentName = emp.Department.Name;
+                        salaryReportData.TotalAbsentDays = CalculateAbsent(emp.NationalId, from).Result;
+                        salaryReportData.PenalityHours = CalculateLate(emp.NationalId, from).Result + CalculateEarlyLeave(emp.NationalId, from).Result;
+                        salaryReportData.TotalOvertimeHours = CalculateOvertime(emp.NationalId, from).Result;
+                        salaryReportData.TotalSalary = CalculateNetSalary(emp.NationalId, from);
+                        salaryReportData.TotalAttendanceDays = CalculateTotalWorkingDays(emp.Name, from);
+                        salaryReportData.TotalBounus = CalculateTotalBonus(CalculateOvertime(emp.NationalId, from).Result, emp.Salary, bonusRate);
+                        salaryReportData.TotalPenality = CalculateTotalPenality(CalculateLate(emp.NationalId, from).Result + CalculateEarlyLeave(emp.NationalId, from).Result + (CalculateAbsent(emp.NationalId, from).Result * calcualateNoOfWorkingHourPerEmp(emp)), emp.Salary, penalityRate);
+                        Data.Add(salaryReportData);
+                    }
                 }
 
             }

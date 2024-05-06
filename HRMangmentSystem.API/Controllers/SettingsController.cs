@@ -19,8 +19,9 @@ namespace HRMangmentSystem.API.Controllers
         private readonly ISettingsRepository _settingstRepository;
         private readonly IMapper _mapper;
         private readonly ResponseHandler _responseHandler;
-        public SettingsController(ISettingsRepository settingsrepository, IMapper mapper, ResponseHandler responseHandler) { 
-         _settingstRepository = settingsrepository;
+        public SettingsController(ISettingsRepository settingsrepository, IMapper mapper, ResponseHandler responseHandler)
+        {
+            _settingstRepository = settingsrepository;
             _mapper = mapper;
             _responseHandler = responseHandler;
         }
@@ -28,8 +29,8 @@ namespace HRMangmentSystem.API.Controllers
         public async Task<IActionResult> GetSetting()
         {
             dynamic response;
-            var settings =  _settingstRepository.GetTableAsTracking();
-            var mappedSettings = _mapper.Map<List<GeneralSettings>, List<SettingsQueryDto> >(settings);
+            var settings = _settingstRepository.GetTableAsTracking();
+            var mappedSettings = _mapper.Map<List<GeneralSettings>, List<SettingsQueryDto>>(settings);
             if (settings == null)
             {
                 response = _responseHandler.NotFound<string>("No Settings Found");
@@ -52,7 +53,7 @@ namespace HRMangmentSystem.API.Controllers
                     response = _responseHandler.Success<SettingsCommandDto>(settingsCommandDto);
                     return Ok(response);
                 }
-              
+
             }
             response = _responseHandler.NotFound<string>("No Settings Found");
             return NotFound(response);
@@ -60,18 +61,18 @@ namespace HRMangmentSystem.API.Controllers
 
         }
         [HttpPut("UpdateSettings")]
-        public async Task<IActionResult>UpdateSetting(SettingsCommandDto settingsCommandDto)
+        public async Task<IActionResult> UpdateSetting(SettingsCommandDto settingsCommandDto)
         {
             dynamic response;
             if (ModelState.IsValid)
             {
 
-                    var mappedSettings = _mapper.Map<SettingsCommandDto, GeneralSettings>(settingsCommandDto);
-                    await _settingstRepository.UpdateAsync(mappedSettings);
-                    response = _responseHandler.Success<SettingsCommandDto>(settingsCommandDto);
-                    return Ok(response);
-                
-               
+                var mappedSettings = _mapper.Map<SettingsCommandDto, GeneralSettings>(settingsCommandDto);
+                await _settingstRepository.UpdateAsync(mappedSettings);
+                response = _responseHandler.Success<SettingsCommandDto>(settingsCommandDto);
+                return Ok(response);
+
+
             }
             response = _responseHandler.NotFound<string>("No Settings Found");
             return NotFound(response);
@@ -79,11 +80,11 @@ namespace HRMangmentSystem.API.Controllers
 
         }
         [HttpDelete("DeleteSettings")]
-        public async Task<IActionResult>DeleteSettings(int settingId)
+        public async Task<IActionResult> DeleteSettings(int settingId)
         {
             dynamic response;
-            GeneralSettings entity =  await _settingstRepository.GetByIdAsync(settingId);
-            if(entity == null)
+            GeneralSettings entity = await _settingstRepository.GetByIdAsync(settingId);
+            if (entity == null)
             {
                 response = _responseHandler.NotFound<string>("No Settings Found");
                 return NotFound(response);
