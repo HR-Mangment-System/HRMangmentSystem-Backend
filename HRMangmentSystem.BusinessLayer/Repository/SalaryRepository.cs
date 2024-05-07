@@ -101,7 +101,7 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             {
                 if (attendance.OvertimeHours > 0)
                 {
-                    totalOvertime++;
+                    totalOvertime += attendance.OvertimeHours;
                 }
             }
             return totalOvertime;
