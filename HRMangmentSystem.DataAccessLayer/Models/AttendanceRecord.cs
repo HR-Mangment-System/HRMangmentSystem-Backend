@@ -18,8 +18,8 @@ namespace HRMangmentSystem.DataAccessLayer.Models
         public DateOnly AttendanceDate { get; set; }
         public TimeOnly? ArrivalTime { get; set; }
         public TimeOnly? DepartureTime { get; set; }
-        public int LateHours { get; set; } = 0;
-        public int EarlyLeaveHours { get; set; } = 0;
-        public int OvertimeHours { get; set; } = 0;
+        public int? LateHours { get; set; }
+        public int? EarlyLeaveHours { get; set; }
+        public int? OvertimeHours { get; set; }
     }
 }
