@@ -89,7 +89,7 @@ namespace HRMangmentSystem.API.Controllers
                 response = _responseHandler.NotFound<string>("No Settings Found");
                 return NotFound(response);
             }
-            _settingstRepository.DeleteAsync(entity);
+            await _settingstRepository.DeleteAsync(entity);
             response = _responseHandler.Success<string>("Deleted Successfully");
             return Ok(response);
 
