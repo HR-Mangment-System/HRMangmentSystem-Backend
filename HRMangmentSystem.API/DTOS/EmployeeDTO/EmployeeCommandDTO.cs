@@ -27,9 +27,7 @@ namespace HRMangmentSystem.API.DTOS.EmployeeDTO
         public char Gender { get; set; }
 
         [Required(ErrorMessage = "Date of birth is required.")]
-        [DataType(DataType.Date)]
-        [MinimumAge(21, ErrorMessage = "You must be at least 21 years old.")]
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
 
         [MaxLength(50, ErrorMessage = "Nationality cannot exceed 50 characters.")]
         public string Nationality { get; set; }
@@ -38,9 +36,7 @@ namespace HRMangmentSystem.API.DTOS.EmployeeDTO
         public string NationalId { get; set; }
 
         [Required(ErrorMessage = "Hire date is required.")]
-        [DataType(DataType.Date)]
-        [MinimumHireDate(ErrorMessage = "Hire date must be on or after January 1, 2008.")]
-        public DateTime HireDate { get; set; }
+        public string HireDate { get; set; }
 
         [DataType(DataType.Currency)]
         [Range(0, double.MaxValue, ErrorMessage = "Salary must be a positive value.")]
@@ -51,7 +47,6 @@ namespace HRMangmentSystem.API.DTOS.EmployeeDTO
         [Required(ErrorMessage = "Departure time is required.")]
         public string DepartureTime { get; set; }
         public bool IsDeleted { get; set; }
-
         public int DepartmentId { get; set; }
 
     }

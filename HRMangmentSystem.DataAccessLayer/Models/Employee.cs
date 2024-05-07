@@ -28,7 +28,6 @@ namespace HRManagementSystem.DataAccessLayer.Models
         public char Gender { get; set; }
 
         [Required(ErrorMessage = "Date of birth is required.")]
-        [DataType(DataType.Date)]
         [MinimumAge(21, ErrorMessage = "You must be at least 21 years old.")]
         public DateOnly DateOfBirth { get; set; }
 
@@ -39,7 +38,6 @@ namespace HRManagementSystem.DataAccessLayer.Models
         public string NationalId { get; set; }
 
         [Required(ErrorMessage = "Hire date is required.")]
-        [DataType(DataType.Date)]
         [MinimumHireDate(ErrorMessage = "Hire date must be on or after January 1, 2008.")]
         public DateOnly HireDate { get; set; }
 

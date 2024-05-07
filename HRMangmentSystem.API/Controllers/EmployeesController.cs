@@ -70,7 +70,6 @@ namespace HRMangmentSystem.API.Controllers
             {
                 Employee employee = _mapper.Map<EmployeeCommandDTO, Employee>(employeeCommandDTO);
                 employee.IsDeleted = false;
-               
                 await _employeeRepository.AddAsync(employee);
                 response = _responseHandler.Success<string>($"Employee {employee.Name} Added Successfully");
                 return Ok(response);

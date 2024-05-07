@@ -15,7 +15,10 @@ namespace HRMangmentSystem.API.Mapping.EmployeeMapping
 
             CreateMap<EmployeeCommandDTO, Employee>()
                 .ForMember(dest => dest.AttendanceTime, opt => opt.MapFrom(src => TimeOnly.Parse(src.AttendanceTime)))
-                .ForMember(dest => dest.DepartureTime, opt => opt.MapFrom(src => TimeOnly.Parse(src.DepartureTime)));
+                .ForMember(dest => dest.DepartureTime, opt => opt.MapFrom(src => TimeOnly.Parse(src.DepartureTime)))
+                .ForMember(dest => dest.HireDate, opt => opt.MapFrom(src => DateOnly.Parse(src.HireDate)))
+                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => DateOnly.Parse(src.DateOfBirth)))
+                ;
         }
 
     }
