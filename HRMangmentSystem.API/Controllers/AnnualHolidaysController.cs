@@ -64,7 +64,7 @@ namespace HRMangmentSystem.API.Controllers
                 response = _responseHandler.NotFound<string>("No Holiday found");
                 return NotFound(response);
             }
-            _annualHolidaysRepository.DeleteAsync(entity);
+            await _annualHolidaysRepository.DeleteAsync(entity);
             response = _responseHandler.Success<string>("Deleted Successfully");
             return Ok(response);
         }
