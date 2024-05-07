@@ -28,7 +28,7 @@ namespace HRMangmentSystem.API.Controllers
             if (ModelState.IsValid)
             {
                 var salaryReport = _salaryRepository.CalculateSalary(employeeName, DateOnly.Parse(date));
-                if (salaryReport == null)
+                if (salaryReport == null || salaryReport.Count == 0)
                 {
                     response = _responseHandler.NotFound<string>("No Salaries Found");
                     return NotFound(response);

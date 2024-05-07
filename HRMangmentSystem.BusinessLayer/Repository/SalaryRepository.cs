@@ -71,9 +71,9 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             var attendanceData = _attendanceReportRepository.GetWithFilter(employee.Name, from, from.AddDays(DateTime.DaysInMonth(from.Year, from.Month)));
             foreach (var attendance in attendanceData)
             {
-                if (attendance.LateHours > 0)
+                if (attendance.LateHours > 0 && attendance.LateHours is not null)
                 {
-                    totalLate++;
+                    totalLate += attendance.LateHours.Value;
                 }
             }
             return totalLate;
@@ -85,9 +85,9 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             var attendanceData = _attendanceReportRepository.GetWithFilter(employee.Name, from, from.AddDays(DateTime.DaysInMonth(from.Year, from.Month)));
             foreach (var attendance in attendanceData)
             {
-                if (attendance.EarlyLeaveHours > 0)
+                if (attendance.EarlyLeaveHours > 0 && attendance.EarlyLeaveHours is not null)
                 {
-                    totalEarlyLeave++;
+                    totalEarlyLeave += attendance.EarlyLeaveHours.Value;
                 }
             }
             return totalEarlyLeave;
@@ -99,9 +99,9 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             var attendanceData = _attendanceReportRepository.GetWithFilter(employee.Name, from, from.AddDays(DateTime.DaysInMonth(from.Year, from.Month)));
             foreach (var attendance in attendanceData)
             {
-                if (attendance.OvertimeHours > 0)
+                if (attendance.OvertimeHours > 0 && attendance.OvertimeHours is not null)
                 {
-                    totalOvertime += attendance.OvertimeHours;
+                    totalOvertime += attendance.OvertimeHours.Value;
                 }
             }
             return totalOvertime;
