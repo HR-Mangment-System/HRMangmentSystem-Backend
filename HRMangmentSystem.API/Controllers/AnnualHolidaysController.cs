@@ -39,20 +39,36 @@ namespace HRMangmentSystem.API.Controllers
             return Ok(response);
 
         }
-        [HttpPut("EditHoliday")]
-        public async Task<IActionResult> EditHoliday(AnnualHolidaysCommandDTO annualHolidaysCommandDTO)
+        [HttpPut("EditHoliday/{id}")]
+        public async Task<IActionResult> EditHoliday(int id, AnnualHolidaysCommandDTO annualHolidaysCommandDTO)
         {
             dynamic response;
+
+            
             if (ModelState.IsValid)
             {
-                var mappedSettings = _mapper.Map<AnnualHolidaysCommandDTO, AnnualHolidays>(annualHolidaysCommandDTO);
-                await _annualHolidaysRepository.UpdateAsync(mappedSettings);
+                var existingHoliday = await _annualHolidaysRepository.GetByIdAsync(id);
+                if (existingHoliday == null)
+                {
+                    
+                    response = _responseHandler.NotFound<string>("No Holiday Found");
+                    return NotFound(response);
+                }
+
+                annualHolidaysCommandDTO.Id = id;
+                var updatedHoliday = _mapper.Map(annualHolidaysCommandDTO, existingHoliday);
+                await _annualHolidaysRepository.UpdateAsync(updatedHoliday);
+
+                
                 response = _responseHandler.Success<AnnualHolidaysCommandDTO>(annualHolidaysCommandDTO);
                 return Ok(response);
             }
-            response = _responseHandler.NotFound<string>("No Holiday Found");
-            return NotFound(response);
-
+            else
+            {
+                
+                response = _responseHandler.BadRequest<string>("Invalid model state");
+                return BadRequest(response);
+            }
         }
         [HttpDelete("DeleteHoliday")]
         public async Task<IActionResult> DeleteHoliday(int holidayId)
