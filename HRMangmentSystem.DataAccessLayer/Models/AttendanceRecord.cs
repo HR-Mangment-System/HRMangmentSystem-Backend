@@ -18,7 +18,7 @@ namespace HRMangmentSystem.DataAccessLayer.Models
         [ForeignKey("Employee")]
         public string EmployeeNationalId { get; set; }
         public virtual Employee? Employee { get; set; }
-        
+       
         public DateOnly AttendanceDate { get; set; }
         public TimeOnly? ArrivalTime { get; set; }
         public TimeOnly? DepartureTime { get; set; }

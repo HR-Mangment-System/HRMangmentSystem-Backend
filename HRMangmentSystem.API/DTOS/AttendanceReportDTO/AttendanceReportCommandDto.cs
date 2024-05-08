@@ -1,22 +1,26 @@
 ﻿using HRMangmentSystem.API.DtoValidators.AttendanceValidators;
+using HRMangmentSystem.DataAccessLayer.CustomValidators;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace HRMangmentSystem.API.DTOS.AttendanceReportDTO
 {
     public class AttendanceReportCommandDto
     {
+        [JsonIgnore]
         public int? Id { get; set; }
         public string EmployeeNationalId { get; set; }
+        [HolidaysCheckerValidation]
         public string AttendanceDate { get; set; }
         [ArrivalAndDepartureTime]
         public string? ArrivalTime { get; set; }
         [ArrivalAndDepartureTime]
         public string? DepartureTime { get; set; }
-        [NotMapped]
+        [JsonIgnore]
         public int? LateHours { get; set; }
-        [NotMapped]
+        [JsonIgnore]
         public int? EarlyLeaveHours { get; set; }
-        [NotMapped]
+        [JsonIgnore]
         public int? OvertimeHours { get; set; }
 
     }
