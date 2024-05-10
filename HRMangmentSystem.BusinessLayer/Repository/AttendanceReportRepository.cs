@@ -43,12 +43,12 @@ namespace HRMangmentSystem.BusinessLayer.Repository
                 ThenInclude(dept => dept.Department).ToList();
         }
 
-        public List<AttendanceRecord> GetWithFilter(string EmpNameOrDeptName, DateOnly FromDate, DateOnly ToDate)
+        public List<AttendanceRecord> GetWithFilter(string? EmpNameOrDeptName, DateOnly FromDate, DateOnly ToDate)
         {
             var query = _attendance.Include(emp => emp.Employee)
                                     .ThenInclude(dept => dept.Department)
                                     .Where(record =>
-                                        (record.Employee.Name.Contains(EmpNameOrDeptName) ||
+                                        (record.Employee.Name.Contains(EmpNameOrDeptName ?? "") ||
                                         record.Employee.Department.Name.Contains(EmpNameOrDeptName))
                                         &&
                                         (record.AttendanceDate.CompareTo(FromDate) >= 0 && record.AttendanceDate.CompareTo(ToDate) <= 0)

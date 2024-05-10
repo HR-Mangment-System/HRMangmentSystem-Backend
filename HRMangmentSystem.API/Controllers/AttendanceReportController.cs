@@ -142,7 +142,7 @@ namespace HRMangmentSystem.API.Controllers
             return BadRequest(response);
         }
         [HttpGet("GetAttendanceReportWithFilter")]
-        public async Task<IActionResult> GetAttendanceReportWithFilter(string EmpNameOrDeptName, string FromDate, string ToDate)
+        public async Task<IActionResult> GetAttendanceReportWithFilter(string? EmpNameOrDeptName, string FromDate, string ToDate)
         {
             dynamic response;
             if (ModelState.IsValid)
