@@ -1,5 +1,6 @@
 ﻿using HRMangmentSystem.BusinessLayer.IRepository;
 using HRMangmentSystem.BusinessLayer.Repository;
+using HRMangmentSystem.DataAccessLayer.CustomValidators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HRMangmentSystem.BusinessLayer
