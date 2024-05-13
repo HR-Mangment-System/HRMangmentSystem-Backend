@@ -1,28 +1,22 @@
 ﻿using HRMangmentSystem.DataAccessLayer.Context;
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace HRMangmentSystem.DataAccessLayer.CustomValidators
+namespace HRMangmentSystem.API.DtoValidators.AttendanceValidators
 {
-    public class HolidaysCheckerValidation : ValidationAttribute
+    public class HolidayChecker: ValidationAttribute
     {
-       
-
-
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var _hRMangmentCotext = (HRMangmentCotext)validationContext.GetService(typeof(HRMangmentCotext));
-            
-            if (value is DateOnly date)
+
+            if (value is string date)
             {
-                var holiday = _hRMangmentCotext.AnnualHolidays.FirstOrDefault(x => x.HolidayDate == date);
+                var attendancedate= DateOnly.Parse(date);
+                var holiday = _hRMangmentCotext.AnnualHolidays.FirstOrDefault(x => x.HolidayDate == attendancedate);
                 var settings = _hRMangmentCotext.GeneralSettings.FirstOrDefault();
                 if (settings == null)
                 {
-                     return new ValidationResult("The date is a holiday.");
+                    return new ValidationResult("The date is a holiday.");
                 }
 
                 var holidayday1 = settings.WeeklyHoliday1;
@@ -30,15 +24,15 @@ namespace HRMangmentSystem.DataAccessLayer.CustomValidators
                 DayOfWeek firstDayOfWeek = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), holidayday1);
                 DayOfWeek secondDayOfWeek = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), holidayday2);
 
-                 
 
-                if (holiday!=null)
+
+                if (holiday != null)
                 {
                     return new ValidationResult("The date is a holiday.");
                 }
-                
 
-                if (date.DayOfWeek == firstDayOfWeek || date.DayOfWeek == secondDayOfWeek)
+
+                if (attendancedate.DayOfWeek == firstDayOfWeek || attendancedate.DayOfWeek == secondDayOfWeek)
                 {
                     return new ValidationResult("The date is a weekend holiday.");
                 }
@@ -46,7 +40,5 @@ namespace HRMangmentSystem.DataAccessLayer.CustomValidators
 
             return ValidationResult.Success;
         }
-
-        
     }
 }

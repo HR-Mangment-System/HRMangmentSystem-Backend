@@ -10,7 +10,7 @@ namespace HRMangmentSystem.API.DTOS.AttendanceReportDTO
         [JsonIgnore]
         public int? Id { get; set; }
         public string EmployeeNationalId { get; set; }
-        [HolidaysCheckerValidation]
+        [HolidayChecker]
         public string AttendanceDate { get; set; }
         [ArrivalAndDepartureTime]
         public string? ArrivalTime { get; set; }
