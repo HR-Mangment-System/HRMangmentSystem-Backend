@@ -58,9 +58,12 @@ namespace HRMangmentSystem.BusinessLayer.Repository
             userClaims.Add(new Claim("userFullName", user.FullName));
             userClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             var role = await _userManger.GetRolesAsync(user);
+            
             foreach (var r in role)
             {
                 userClaims.Add(new Claim(ClaimTypes.Role, r));
+                userClaims.Add(new Claim("UserRole", r));
+
             }
 
             SecurityKey securityKey =
@@ -90,7 +93,7 @@ namespace HRMangmentSystem.BusinessLayer.Repository
                 var groupPermissions = group.Permissions;
                 foreach (var permission in groupPermissions)
                 {
-                    var p = PermissionGenerator.GeneratePermissions(permission.Name, false, true, false, true);
+                    var p = PermissionGenerator.GeneratePermissions(permission.Name, permission.Create??false, permission.Read ?? false, permission.Update ?? false, permission.Delete ?? false);
                     foreach (var perm in p)
                     {
                         if (!await _roleManager.RoleExistsAsync(perm))
