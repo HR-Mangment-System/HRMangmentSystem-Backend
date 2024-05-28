@@ -63,21 +63,29 @@ namespace HRMangmentSystem.API.Controllers
         [HttpPut("UpdateSettings")]
         public async Task<IActionResult> UpdateSetting(SettingsCommandDto settingsCommandDto)
         {
-            var currentSettings = _settingstRepository.GetTableAsTracking();
-            var currentsettingsid= currentSettings[0].Id;
-            settingsCommandDto.Id = currentsettingsid;
+            List <GeneralSettings>? currentSettings = _settingstRepository.GetTableAsTracking();
+            
+            
 
    
             dynamic response;
-            if (ModelState.IsValid)
-            {
+            //update
+            if (ModelState.IsValid&& currentSettings.Count==1)
 
+            {
+                var currentsettingsid = currentSettings[0].Id;
+                settingsCommandDto.Id = currentsettingsid;
                 var mappedSettings = _mapper.Map<SettingsCommandDto, GeneralSettings>(settingsCommandDto);
                 await _settingstRepository.UpdateAsync(mappedSettings);
                 response = _responseHandler.Success<SettingsCommandDto>(settingsCommandDto);
                 return Ok(response);
 
 
+            }
+            else if(ModelState.IsValid && currentSettings.Count == 0) {
+                SetSetting(settingsCommandDto);
+               return Ok();
+                
             }
             response = _responseHandler.NotFound<string>("No Settings Found");
             return NotFound(response);
