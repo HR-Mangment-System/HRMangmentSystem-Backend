@@ -59,6 +59,7 @@ namespace HRMangmentSystem.API.Controllers
         public async Task<IActionResult> AddAttendanceReport(AttendanceReportCommandDto attendanceReportCommandDto)
         {
             dynamic response;
+
             int noOfOverTimeHours = 0;
             if (ModelState.IsValid)
             {

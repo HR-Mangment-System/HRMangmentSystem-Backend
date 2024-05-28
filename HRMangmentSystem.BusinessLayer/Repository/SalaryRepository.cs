@@ -130,7 +130,7 @@ namespace HRMangmentSystem.BusinessLayer.Repository
                 (totalLate * (double)(PenaltyRate / 100) * baseSalary) -
                 (totalEarlyLeave * (double)(PenaltyRate / 100) * baseSalary) +
                 (totalOvertime * (double)(BonusRate / 100) * baseSalary);
-            return netSalary;
+            return netSalary > 0 ? netSalary : 0;
         }
         public double CalculateTotalBonus(int hours, double salary, decimal bonusRate)
         {
