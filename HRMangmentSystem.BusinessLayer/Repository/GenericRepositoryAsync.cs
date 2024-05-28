@@ -46,7 +46,7 @@ namespace HRMangmentSystem.BusinessLayer.Repository
 
         public virtual  List<T> GetTableAsTracking()
         {
-            return  _dbContext.Set<T>().ToList();
+            return  _dbContext.Set<T>().AsNoTracking().ToList();
         }
 
         public async Task SaveChangesAsync()

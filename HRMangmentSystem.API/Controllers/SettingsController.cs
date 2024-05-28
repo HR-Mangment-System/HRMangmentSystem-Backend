@@ -63,6 +63,11 @@ namespace HRMangmentSystem.API.Controllers
         [HttpPut("UpdateSettings")]
         public async Task<IActionResult> UpdateSetting(SettingsCommandDto settingsCommandDto)
         {
+            var currentSettings = _settingstRepository.GetTableAsTracking();
+            var currentsettingsid= currentSettings[0].Id;
+            settingsCommandDto.Id = currentsettingsid;
+
+   
             dynamic response;
             if (ModelState.IsValid)
             {
