@@ -124,7 +124,7 @@ namespace HRMangmentSystem.API.Controllers
                     }
                     if (employee.AttendanceTime > TimeOnly.Parse(record.ArrivalTime))
                     {
-                        noOfOverTimeHours += (employee.AttendanceTime - TimeOnly.Parse(record.ArrivalTime)).Hours;
+                        noOfOverTimeHours = (employee.AttendanceTime - TimeOnly.Parse(record.ArrivalTime)).Hours;
                     }
                     if (employee.DepartureTime > TimeOnly.Parse(record.DepartureTime))
                     {
@@ -132,7 +132,7 @@ namespace HRMangmentSystem.API.Controllers
                     }
                     else if (employee.DepartureTime < TimeOnly.Parse(record.DepartureTime))
                     {
-                        noOfOverTimeHours += (TimeOnly.Parse(record.DepartureTime) - employee.DepartureTime).Hours;
+                        noOfOverTimeHours = (TimeOnly.Parse(record.DepartureTime) - employee.DepartureTime).Hours;
                     }
                     record.OvertimeHours = noOfOverTimeHours;
                 }
