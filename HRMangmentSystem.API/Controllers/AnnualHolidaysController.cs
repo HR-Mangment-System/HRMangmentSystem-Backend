@@ -6,6 +6,7 @@ using HRMangmentSystem.API.ResponseBase;
 using HRMangmentSystem.BusinessLayer.IRepository;
 using HRMangmentSystem.BusinessLayer.Repository;
 using HRMangmentSystem.DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,8 @@ namespace HRMangmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin, Admin")]
+
     public class AnnualHolidaysController : ControllerBase
     {
         private readonly IAnnualHolidaysRepository _annualHolidaysRepository;
@@ -44,13 +47,13 @@ namespace HRMangmentSystem.API.Controllers
         {
             dynamic response;
 
-            
+
             if (ModelState.IsValid)
             {
                 var existingHoliday = await _annualHolidaysRepository.GetByIdAsync(id);
                 if (existingHoliday == null)
                 {
-                    
+
                     response = _responseHandler.NotFound<string>("No Holiday Found");
                     return NotFound(response);
                 }
@@ -59,13 +62,13 @@ namespace HRMangmentSystem.API.Controllers
                 var updatedHoliday = _mapper.Map(annualHolidaysCommandDTO, existingHoliday);
                 await _annualHolidaysRepository.UpdateAsync(updatedHoliday);
 
-                
+
                 response = _responseHandler.Success<AnnualHolidaysCommandDTO>(annualHolidaysCommandDTO);
                 return Ok(response);
             }
             else
             {
-                
+
                 response = _responseHandler.BadRequest<string>("Invalid model state");
                 return BadRequest(response);
             }

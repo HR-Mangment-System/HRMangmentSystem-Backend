@@ -7,6 +7,7 @@ using HRMangmentSystem.API.ResponseBase;
 using HRMangmentSystem.BusinessLayer.IRepository;
 using HRMangmentSystem.BusinessLayer.Repository;
 using HRMangmentSystem.DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,8 @@ namespace HRMangmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin, Admin")]
+
     public class SettingsController : ControllerBase
     {
         private readonly ISettingsRepository _settingstRepository;
@@ -63,14 +66,14 @@ namespace HRMangmentSystem.API.Controllers
         [HttpPut("UpdateSettings")]
         public async Task<IActionResult> UpdateSetting(SettingsCommandDto settingsCommandDto)
         {
-            List <GeneralSettings>? currentSettings = _settingstRepository.GetTableAsTracking();
-            
-            
+            List<GeneralSettings>? currentSettings = _settingstRepository.GetTableAsTracking();
 
-   
+
+
+
             dynamic response;
             //update
-            if (ModelState.IsValid&& currentSettings.Count==1)
+            if (ModelState.IsValid && currentSettings.Count == 1)
 
             {
                 var currentsettingsid = currentSettings[0].Id;
@@ -82,10 +85,11 @@ namespace HRMangmentSystem.API.Controllers
 
 
             }
-            else if(ModelState.IsValid && currentSettings.Count == 0) {
+            else if (ModelState.IsValid && currentSettings.Count == 0)
+            {
                 SetSetting(settingsCommandDto);
-               return Ok();
-                
+                return Ok();
+
             }
             response = _responseHandler.NotFound<string>("No Settings Found");
             return NotFound(response);

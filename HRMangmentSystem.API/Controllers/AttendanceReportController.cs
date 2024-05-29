@@ -5,6 +5,7 @@ using HRMangmentSystem.API.DTOS.EmployeeDTO;
 using HRMangmentSystem.API.ResponseBase;
 using HRMangmentSystem.BusinessLayer.IRepository;
 using HRMangmentSystem.DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Contracts;
@@ -13,6 +14,8 @@ namespace HRMangmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin, Admin")]
+
     public class AttendanceReportController : ControllerBase
     {
         private readonly IAttendanceReportRepository _attendanceReportRepository;

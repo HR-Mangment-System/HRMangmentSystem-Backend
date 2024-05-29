@@ -3,12 +3,15 @@ using HRManagementSystem.DataAccessLayer.Models;
 using HRMangmentSystem.API.DTOS.EmployeeDTO;
 using HRMangmentSystem.API.ResponseBase;
 using HRMangmentSystem.BusinessLayer.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRMangmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin, Admin")]
+
     public class EmployeesController : ControllerBase
     {
         #region Fields

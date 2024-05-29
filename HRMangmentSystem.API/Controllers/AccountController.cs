@@ -39,6 +39,7 @@ namespace HRMangmentSystem.API.Controllers
 
         #endregion
         [HttpPost("CreateAdmin")]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> CreateAdminAsync(AccountCommandDTO user)
         {
             Response<string> response;

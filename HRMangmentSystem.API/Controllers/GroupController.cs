@@ -11,6 +11,8 @@ namespace HRMangmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin")]
+
     public class GroupController : ControllerBase
     {
         private readonly IGroupRepository _groupRepository;

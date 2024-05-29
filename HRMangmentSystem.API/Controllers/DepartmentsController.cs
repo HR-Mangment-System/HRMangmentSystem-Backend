@@ -3,12 +3,14 @@ using HRMangmentSystem.API.DTOS.DepartmentDTO;
 using HRMangmentSystem.API.ResponseBase;
 using HRMangmentSystem.BusinessLayer.IRepository;
 using HRMangmentSystem.DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRMangmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin")]
     public class DepartmentsController : ControllerBase
     {
         #region Fields

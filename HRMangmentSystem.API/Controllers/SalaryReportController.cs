@@ -3,6 +3,7 @@ using HRMangmentSystem.API.DTOS.SalaryReportDTO;
 using HRMangmentSystem.API.ResponseBase;
 using HRMangmentSystem.BusinessLayer.Helpers;
 using HRMangmentSystem.BusinessLayer.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,8 @@ namespace HRMangmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin, Admin")]
+
     public class SalaryReportController : ControllerBase
     {
         private readonly ISalaryRepository _salaryRepository;
