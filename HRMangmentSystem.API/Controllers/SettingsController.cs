@@ -87,7 +87,7 @@ namespace HRMangmentSystem.API.Controllers
             }
             else if (ModelState.IsValid && currentSettings.Count == 0)
             {
-                SetSetting(settingsCommandDto);
+                await SetSetting(settingsCommandDto);
                 return Ok();
 
             }
